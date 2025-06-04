@@ -3,14 +3,364 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ResumeCraft | Login</title>
+    <title>ResumeCraft | Secure Login</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
-
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
-    
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --success: #4cc9f0;
+            --dark: #1d3557;
+            --light: #f8f9fa;
+            --danger: #e63946;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        /* Header */
+        .form-header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--dark);
+            text-decoration: none;
+        }
+        
+        .logo span {
+            color: var(--primary);
+        }
+        
+        .theme-toggle, .mobile-toggle {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--dark);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+        
+        .theme-toggle:hover, .mobile-toggle:hover {
+            background-color: var(--light-gray);
+        }
+        
+        /* Login Container */
+        .login-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 0;
+        }
+        
+        .login-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            width: 100%;
+            max-width: 450px;
+            padding: 2.5rem;
+            margin: 1rem;
+        }
+        
+        .login-card h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+        
+        .login-card p {
+            color: var(--gray);
+            margin-bottom: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--light-gray);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        .form-group input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+        
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .remember-forgot label {
+            display: flex;
+            align-items: center;
+            color: var(--gray);
+            cursor: pointer;
+        }
+        
+        .remember-forgot input {
+            margin-right: 0.5rem;
+        }
+        
+        .remember-forgot a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .remember-forgot a:hover {
+            text-decoration: underline;
+        }
+        
+        .btn {
+            display: block;
+            padding: 0.9rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            text-decoration: none;
+        }
+        
+        .btn:hover {
+            background-color: var(--secondary);
+            transform: translateY(-2px);
+        }
+        
+        .divider {
+            position: relative;
+            text-align: center;
+            margin: 1.5rem 0;
+        }
+        
+        .divider span {
+            display: inline-block;
+            padding: 0 1rem;
+            background-color: white;
+            color: var(--gray);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background-color: var(--light-gray);
+            z-index: 0;
+        }
+        
+        .btn-google {
+            background-color: white;
+            color: var(--dark);
+            border: 1px solid var(--light-gray);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        
+        .btn-google:hover {
+            background-color: var(--light-gray);
+            transform: translateY(-2px);
+        }
+        
+        .signup-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.95rem;
+            color: var(--gray);
+        }
+        
+        .signup-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Footer */
+        .form-footer {
+            background-color: white;
+            padding: 1.5rem 0;
+            margin-top: auto;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .copyright {
+            text-align: center;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        /* Dark Mode */
+        body.dark-mode {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #f0f0f0;
+        }
+        
+        .dark-mode .form-header,
+        .dark-mode .form-footer,
+        .dark-mode .login-card {
+            background-color: #1e293b;
+        }
+        
+        .dark-mode .logo {
+            color: #f0f0f0;
+        }
+        
+        .dark-mode .login-card h2,
+        .dark-mode .form-group label {
+            color: #f0f0f0;
+        }
+        
+        .dark-mode .login-card p,
+        .dark-mode .signup-link,
+        .dark-mode .copyright {
+            color: #cbd5e1;
+        }
+        
+        .dark-mode .form-group input {
+            background-color: #2d3748;
+            border-color: #4a5568;
+            color: #f0f0f0;
+        }
+        
+        .dark-mode .form-group input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.3);
+        }
+        
+        .dark-mode .remember-forgot label {
+            color: #cbd5e1;
+        }
+        
+        .dark-mode .btn-google {
+            background-color: #2d3748;
+            border-color: #4a5568;
+            color: #f0f0f0;
+        }
+        
+        .dark-mode .btn-google:hover {
+            background-color: #374151;
+        }
+        
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: var(--border-radius);
+            color: white;
+            font-weight: 500;
+            z-index: 1000;
+            transform: translateX(110%);
+            transition: transform 0.3s ease;
+            max-width: 350px;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.success {
+            background-color: #10b981;
+        }
+        
+        .notification.error {
+            background-color: var(--danger);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .login-card {
+                padding: 1.8rem;
+            }
+            
+            .remember-forgot {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.8rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 1.5rem;
+            }
+            
+            .login-card h2 {
+                font-size: 1.7rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Header -->
@@ -23,7 +373,6 @@
             <button class="mobile-toggle" id="mobileToggle">
                 <i class="fas fa-bars"></i>
             </button>
-            </div>
         </div>
     </header>
 
@@ -78,8 +427,156 @@
         </div>
     </footer>
 
-    <script src="java script/script.js"></script>
+    <!-- Notification Container -->
+    <div id="notification" class="notification"></div>
 
-
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+    
+    <script>
+        // Get current year for footer
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+        
+        // Theme toggle
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            const icon = themeToggle.querySelector('i');
+            if (document.body.classList.contains('dark-mode')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+        });
+        
+        // Firebase configuration - Replace with your own config
+        const firebaseConfig = {
+            apiKey: "AIzaSyDpXQdM8qQ1Xw7dY2g4l6z7VZ8w9A0B1C2D",
+            authDomain: "resumecraft-demo.firebaseapp.com",
+            projectId: "resumecraft-demo",
+            storageBucket: "resumecraft-demo.appspot.com",
+            messagingSenderId: "123456789012",
+            appId: "1:123456789012:web:abcdefghijklmnopqrstuv"
+        };
+        
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        
+        // Show notification function
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Email/Password Login
+        const loginForm = document.getElementById('loginForm');
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Simple validation
+            if (!email || !password) {
+                showNotification('Please fill in all fields', 'error');
+                return;
+            }
+            
+            // Firebase email/password authentication
+            auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Signed in
+                    const user = userCredential.user;
+                    showNotification('Login successful! Redirecting...');
+                    
+                    // Here you would typically redirect to the dashboard
+                    console.log('Logged in user:', user);
+                    
+                    // Save user data to Firestore
+                    saveUserData(user);
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    let errorMessage = error.message;
+                    
+                    // User-friendly error messages
+                    if (errorCode === 'auth/user-not-found') {
+                        errorMessage = 'No account found with this email.';
+                    } else if (errorCode === 'auth/wrong-password') {
+                        errorMessage = 'Incorrect password.';
+                    } else if (errorCode === 'auth/too-many-requests') {
+                        errorMessage = 'Too many failed attempts. Try again later.';
+                    }
+                    
+                    showNotification(errorMessage, 'error');
+                });
+        });
+        
+        // Google Sign-In
+        const googleSignInBtn = document.getElementById('googleSignIn');
+        googleSignInBtn.addEventListener('click', () => {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            
+            auth.signInWithPopup(provider)
+                .then((result) => {
+                    // Signed in with Google
+                    const user = result.user;
+                    showNotification('Google login successful! Redirecting...');
+                    
+                    // Here you would typically redirect to the dashboard
+                    console.log('Google logged in user:', user);
+                    
+                    // Save user data to Firestore
+                    saveUserData(user);
+                })
+                .catch((error) => {
+                    console.error('Google sign-in error:', error);
+                    showNotification('Failed to sign in with Google', 'error');
+                });
+        });
+        
+        // Save user data to Firestore
+        function saveUserData(user) {
+            const userData = {
+                uid: user.uid,
+                email: user.email,
+                displayName: user.displayName || '',
+                photoURL: user.photoURL || '',
+                lastLogin: new Date(),
+                provider: user.providerData[0].providerId
+            };
+            
+            // Add or update user data in Firestore
+            db.collection('users').doc(user.uid).set(userData, { merge: true })
+                .then(() => {
+                    console.log('User data saved to Firestore');
+                })
+                .catch((error) => {
+                    console.error('Error saving user data:', error);
+                });
+        }
+        
+        // Check if user is already logged in
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                // User is signed in
+                console.log('User already logged in:', user);
+                // Here you would redirect to the dashboard
+                // window.location.href = '/dashboard.html';
+            }
+        });
+    </script>
 </body>
 </html>
