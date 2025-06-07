@@ -32,15 +32,16 @@
                 '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
         });
 
-        // Firebase configuration (replace with your own config)
-        const firebaseConfig = {
-            apiKey: "AIzaSyB9o2J2LcR2TvXc0eX7Z6m1y5wQd0b8Y7A",
-            authDomain: "resumecraft-12345.firebaseapp.com",
-            projectId: "resumecraft-12345",
-            storageBucket: "resumecraft-12345.appspot.com",
-            messagingSenderId: "123456789012",
-            appId: "1:123456789012:web:abcd1234efgh5678ijkl90"
-        };
+          
+ const firebaseConfig = {
+  apiKey: "AIzaSyAwe3GgMoXXNnTC1yx054GKarXfwJbal5w",
+  authDomain: "resumecraft-d9aa1.firebaseapp.com",
+  projectId: "resumecraft-d9aa1",
+  storageBucket: "resumecraft-d9aa1.firebasestorage.app",
+  messagingSenderId: "873187367113",
+  appId: "1:873187367113:web:64fa2abd9d4ab3f0e85518",
+  measurementId: "G-MSDSLJLV62"
+};
 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
