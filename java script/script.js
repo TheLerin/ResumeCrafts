@@ -37,7 +37,7 @@
      
 createResumeBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    window.open('form/form.html', '_blank');
+    window.open('form/Template1.html', '_blank');
 });
         
       
@@ -69,4 +69,8 @@ createResumeBtn.addEventListener('click', (e) => {
                 }
             });
         });
-  
+
+
+
+
+
