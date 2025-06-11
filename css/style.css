@@ -578,6 +578,7 @@
             }
         }   
 
+html {
+  scroll-behavior: smooth;
+}
 
-
-        /*  Ai with Ai */
